@@ -35,53 +35,57 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var connection_1 = require("./connection");
-var selectAll = function (_a) {
-    var table = _a.table;
-    return __awaiter(void 0, void 0, void 0, function () {
-        var query;
-        return __generator(this, function (_b) {
-            query = ["SELECT * FROM ??", [table]];
-            return [2 /*return*/, new Promise(function (resolve, reject) {
-                    // @ts-ignore
-                    connection_1.connection.query.apply(connection_1.connection, __spreadArrays(query, [function (err, res) {
-                            if (err)
-                                throw err;
-                            resolve(res);
-                        }]));
-                })];
+function isNotNull(x) {
+    return typeof x !== null;
+}
+var devourButtons = document.querySelectorAll(".devour-button");
+var devour = function () {
+    return __awaiter(this, void 0, void 0, function () {
+        var id, url, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    id = this.getAttribute("data-id");
+                    url = "/api/burgers/?id=" + id;
+                    return [4 /*yield*/, fetch(url, {
+                            method: "PUT"
+                        })];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/];
+            }
         });
     });
 };
-var insertOne = function (_a) {
-    var table = _a.table, values = _a.values;
-    return __awaiter(void 0, void 0, void 0, function () {
-        var query;
-        return __generator(this, function (_b) {
-            query = [
-                "INSERT INTO ?? SET ?",
-                [table, values]
-            ];
-            return [2 /*return*/, new Promise(function (resolve, reject) {
-                    // @ts-ignore
-                    connection_1.connection.query.apply(connection_1.connection, __spreadArrays(query, [function (err, res) {
-                            if (err)
-                                throw err;
-                            resolve();
-                        }]));
-                })];
+var addNew = function () {
+    return __awaiter(this, void 0, void 0, function () {
+        var inputBox, text, url, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    inputBox = document.getElementById("burger-text");
+                    if (!isNotNull(inputBox)) return [3 /*break*/, 2];
+                    text = inputBox.value;
+                    url = "/api/burgers/";
+                    console.log(text);
+                    return [4 /*yield*/, fetch(url, {
+                            headers: {
+                                "Content-Type": "application/json"
+                                // 'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            method: "POST",
+                            body: JSON.stringify({ burger: text })
+                        })];
+                case 1:
+                    response = _a.sent();
+                    return [3 /*break*/, 3];
+                case 2: return [2 /*return*/];
+                case 3: return [2 /*return*/];
+            }
         });
     });
 };
-exports.orm = {
-    selectAll: selectAll,
-    insertOne: insertOne
-};
+Array.from(devourButtons).forEach(function (element) {
+    element.addEventListener("click", devour);
+});
+document.getElementById("add-burger").addEventListener("click", addNew);

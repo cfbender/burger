@@ -35,53 +35,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var connection_1 = require("./connection");
-var selectAll = function (_a) {
-    var table = _a.table;
-    return __awaiter(void 0, void 0, void 0, function () {
-        var query;
-        return __generator(this, function (_b) {
-            query = ["SELECT * FROM ??", [table]];
-            return [2 /*return*/, new Promise(function (resolve, reject) {
-                    // @ts-ignore
-                    connection_1.connection.query.apply(connection_1.connection, __spreadArrays(query, [function (err, res) {
-                            if (err)
-                                throw err;
-                            resolve(res);
-                        }]));
-                })];
-        });
+var express_1 = __importDefault(require("express"));
+var orm_1 = require("../config/orm");
+var router = express_1.default.Router();
+router.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var data;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, orm_1.orm.selectAll({ table: "burgers" })];
+            case 1:
+                data = _a.sent();
+                console.log(data);
+                res.render("index", { burgers: data });
+                return [2 /*return*/];
+        }
     });
-};
-var insertOne = function (_a) {
-    var table = _a.table, values = _a.values;
-    return __awaiter(void 0, void 0, void 0, function () {
-        var query;
-        return __generator(this, function (_b) {
-            query = [
-                "INSERT INTO ?? SET ?",
-                [table, values]
-            ];
-            return [2 /*return*/, new Promise(function (resolve, reject) {
-                    // @ts-ignore
-                    connection_1.connection.query.apply(connection_1.connection, __spreadArrays(query, [function (err, res) {
-                            if (err)
-                                throw err;
-                            resolve();
-                        }]));
-                })];
-        });
+}); });
+router.post("/api/burgers", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        console.log("POST with " + JSON.stringify(req.body));
+        return [2 /*return*/];
     });
-};
-exports.orm = {
-    selectAll: selectAll,
-    insertOne: insertOne
-};
+}); });
+router.put("/api/burgers/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        console.log("PUT with id of " + req.query.id + ". Will update to devoured: true");
+        return [2 /*return*/];
+    });
+}); });
+exports.default = router;
