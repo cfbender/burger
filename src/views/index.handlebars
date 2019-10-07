@@ -1,0 +1,32 @@
+<h1>Veggie Burger Bash</h1>
+<div class="burger-container">
+    <div class="burgers">
+        <ul>
+            {{#each burgers}}
+            {{#unless this.done}}
+            <div class="burger-div" data-id={{this.id}}>
+                <li>{{this.burger_name}}</li>
+                <button class="devour-button" data-id={{this.id}}>Devour it</button>
+            </div>
+            {{/unless}}
+            {{/each}}
+        </ul>
+    </div>
+
+    <div className="burgers-done">
+        <ul>
+            {{#each burgers}}
+            {{#if this.done}}
+            <li>{burger.name}</li>
+            {{/if}}
+            {{/each}}
+        </ul>
+    </div>
+</div>
+
+<p><span id="remaining"></span> remaining</p>
+
+<input type="text" id="burger-text" bind:value={textValue} />
+<button on:click={addNew}>Add New</button>
+
+<button id="clear" on:click={clear}>Clear Completed</button>

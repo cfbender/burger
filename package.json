@@ -1,24 +1,21 @@
 {
-  "name": "svelte-app",
-  "version": "1.0.0",
-  "devDependencies": {
-    "npm-run-all": "^4.1.5",
-    "rollup": "^1.12.0",
-    "rollup-plugin-commonjs": "^10.0.0",
-    "rollup-plugin-livereload": "^1.0.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-svelte": "^5.0.3",
-    "rollup-plugin-terser": "^4.0.4",
-    "svelte": "^3.0.0"
-  },
   "dependencies": {
-    "sirv-cli": "^0.4.4"
+    "@types/express": "^4.17.1",
+    "@types/express-handlebars": "^0.0.33",
+    "@types/mysql": "^2.15.7",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "mysql": "^2.17.1",
+    "typescript": "^3.6.3"
   },
+  "name": "burger",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:cfbender/burger.git",
+  "author": "cfbender <codyfbender@gmail.com>",
+  "license": "MIT",
   "scripts": {
-    "build": "rollup -c",
-    "autobuild": "rollup -c -w",
-    "dev": "run-p start:dev autobuild",
-    "start": "sirv public --single",
-    "start:dev": "sirv public --single --dev"
+    "start": "tsc && node ./dist/server.js",
+    "tsc": "tsc"
   }
 }
