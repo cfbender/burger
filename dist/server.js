@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var expressHbs = require("express-handlebars");
+var express_handlebars_1 = __importDefault(require("express-handlebars"));
 var path_1 = __importDefault(require("path"));
 var controllers_1 = __importDefault(require("./controllers"));
 var app = express_1.default();
@@ -13,7 +13,7 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
 app.use(express_1.default.static("public"));
 app.use("/dist", express_1.default.static("dist"));
-app.engine("handlebars", expressHbs({ defaultLayout: "main" }));
+app.engine("handlebars", express_handlebars_1.default({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 app.set("views", path_1.default.join(__dirname, "..", "src", "views"));
 app.use(controllers_1.default);

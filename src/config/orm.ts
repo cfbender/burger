@@ -12,7 +12,7 @@ const selectAll = async ({ table }: { table: string }): Promise<{}[]> => {
   });
 };
 
-type columnValues = { column: string; value: string }[];
+type columnValues = { [k: string]: any }[];
 
 const insertOne = async ({
   table,
@@ -21,11 +21,27 @@ const insertOne = async ({
   table: string;
   values: columnValues;
 }): Promise<void> => {
-  const query: [string, [string, columnValues]] = [
-    "INSERT INTO ?? SET ?",
-    [table, values]
-  ];
+  const query = ["INSERT INTO ?? SET ?", [table, ...values]];
 
+  return new Promise((resolve, reject) => {
+    // @ts-ignore
+    connection.query(...query, (err, res) => {
+      if (err) throw err;
+      resolve();
+    });
+  });
+};
+
+const updateOne = async ({
+  table,
+  values,
+  id
+}: {
+  table: string;
+  values: columnValues;
+  id: number;
+}): Promise<void> => {
+  const query = ["UPDATE ?? SET ? WHERE id = ?", [table, ...values, id]];
   return new Promise((resolve, reject) => {
     // @ts-ignore
     connection.query(...query, (err, res) => {
@@ -37,5 +53,6 @@ const insertOne = async ({
 
 export const orm = {
   selectAll,
-  insertOne
+  insertOne,
+  updateOne
 };

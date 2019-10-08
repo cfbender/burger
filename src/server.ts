@@ -1,5 +1,5 @@
 import express from "express";
-const expressHbs = require("express-handlebars");
+import expressHbs from "express-handlebars";
 import path from "path";
 import routes from "./controllers";
 

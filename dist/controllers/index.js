@@ -63,7 +63,11 @@ router.post("/api/burgers", function (req, res) { return __awaiter(void 0, void 
 }); });
 router.put("/api/burgers/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        console.log("PUT with id of " + req.query.id + ". Will update to devoured: true");
+        orm_1.orm.updateOne({
+            table: "burgers",
+            values: [{ devoured: true }],
+            id: parseInt(req.query.id)
+        });
         return [2 /*return*/];
     });
 }); });

@@ -12,7 +12,11 @@ router.post("/api/burgers", async (req, res) => {
   console.log(`POST with ${JSON.stringify(req.body)}`);
 });
 router.put("/api/burgers/", async (req, res) => {
-  console.log(`PUT with id of ${req.query.id}. Will update to devoured: true`);
+  db.updateOne({
+    table: "burgers",
+    values: [{ devoured: true }],
+    id: parseInt(req.query.id)
+  });
 });
 
 export default router;

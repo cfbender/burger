@@ -3,8 +3,8 @@
     <div class="burgers">
         <ul>
             {{#each burgers}}
-            {{#unless this.done}}
-            <div class="burger-div" data-id={{this.id}}>
+            {{#unless this.devoured}}
+            <div class="burger-div" data-id={{this.id}} data-devoured={{this.devoured}}>
                 <li>{{this.burger_name}}</li>
                 <button class="devour-button" data-id={{this.id}}>Devour it</button>
             </div>
@@ -13,18 +13,21 @@
         </ul>
     </div>
 
-    <div className="burgers-done">
+    <div className="burgers-devoured">
+        You've already eaten:
         <ul>
             {{#each burgers}}
-            {{#if this.done}}
-            <li>{burger.name}</li>
+            {{#if this.devoured}}
+            <div class="burger-div">
+                <li data-devoured={{this.devoured}}>{{this.burger_name}}</li>
+            </div>
             {{/if}}
             {{/each}}
         </ul>
     </div>
 </div>
 
-<p><span id="remaining"></span> remaining</p>
+<p>{{burgers.length}} remaining</p>
 
 <input type="text" id="burger-text" bind:value={textValue} />
 <button id="add-burger">Add New</button>

@@ -35,8 +35,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-function isNotNull(x) {
-    return typeof x !== null;
+function isInputElement(x) {
+    return "value" in x;
 }
 var devourButtons = document.querySelectorAll(".devour-button");
 var devour = function () {
@@ -52,6 +52,8 @@ var devour = function () {
                         })];
                 case 1:
                     response = _a.sent();
+                    this.setAttribute("data-devoured", "true");
+                    location.reload(true);
                     return [2 /*return*/];
             }
         });
@@ -59,25 +61,23 @@ var devour = function () {
 };
 var addNew = function () {
     return __awaiter(this, void 0, void 0, function () {
-        var inputBox, text, url, response;
+        var inputBox, text, url;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     inputBox = document.getElementById("burger-text");
-                    if (!isNotNull(inputBox)) return [3 /*break*/, 2];
+                    if (!isInputElement(inputBox)) return [3 /*break*/, 2];
                     text = inputBox.value;
                     url = "/api/burgers/";
-                    console.log(text);
                     return [4 /*yield*/, fetch(url, {
                             headers: {
                                 "Content-Type": "application/json"
-                                // 'Content-Type': 'application/x-www-form-urlencoded',
                             },
                             method: "POST",
                             body: JSON.stringify({ burger: text })
                         })];
                 case 1:
-                    response = _a.sent();
+                    _a.sent();
                     return [3 /*break*/, 3];
                 case 2: return [2 /*return*/];
                 case 3: return [2 /*return*/];
@@ -85,7 +85,19 @@ var addNew = function () {
         });
     });
 };
+var clear = function () {
+    return __awaiter(this, void 0, void 0, function () {
+        var allWithDevoured, allDevoured;
+        return __generator(this, function (_a) {
+            allWithDevoured = document.querySelectorAll("data-devoured");
+            allDevoured = Array.from(allWithDevoured).filter(function (el) { return el.getAttribute("data-devoured") === "true"; });
+            console.log(allDevoured);
+            return [2 /*return*/];
+        });
+    });
+};
 Array.from(devourButtons).forEach(function (element) {
     element.addEventListener("click", devour);
 });
 document.getElementById("add-burger").addEventListener("click", addNew);
+document.getElementById("clear").addEventListener("click", clear);
