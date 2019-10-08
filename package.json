@@ -25,7 +25,7 @@
     "start": "tsc && node ./dist/server.js",
     "heroku-postbuild": "rollup -c",
     "autobuild": "rollup -c -w",
-    "dev": "run-p start:dev autobuild",
+    "dev": "rollup -c && tsc && node ./dist/server.js",
     "start:dev": "sirv public --single --dev"
   }
 }

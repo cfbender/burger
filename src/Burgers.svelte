@@ -26,6 +26,7 @@
       method: "POST",
       body: JSON.stringify({ burger: textValue })
     });
+    textValue = "";
     burgers = await dataRequest();
   };
 
