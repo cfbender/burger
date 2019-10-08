@@ -23,7 +23,6 @@
     "start": "rollup -c && tsc && node ./dist/server.js",
     "autobuild": "rollup -c -w",
     "dev": "run-p start:dev autobuild",
-    "start": "sirv public --single",
     "start:dev": "sirv public --single --dev"
   }
 }

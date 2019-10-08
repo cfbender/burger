@@ -1,6 +1,7 @@
 <script>
+  import { onMount } from "svelte";
   let id = 0;
-  let burgers = [{ id: ++id, name: "Beyond Burger", done: false }];
+  let burgers = [];
   const clear = () => {
     burgers = burgers.filter(b => !b.done);
   };
@@ -21,39 +22,82 @@
     }
   };
 
-  $: remaining = burgers.filter(b => !b.done).length;
-
   const devour = e => {
     let currentBurger = burgers.filter(b => b.id === Number(e.target.id))[0];
     currentBurger.done = true;
     let restofBurgers = burgers.filter(b => b.id !== Number(e.target.id));
     burgers = [...restofBurgers, currentBurger];
   };
+
+  const dataRequest = async () => {
+    let data = await fetch(
+      `http://${window.location.hostname}:${window.location.port}/api/burgers`
+    );
+    let json = await data.json();
+
+    return json;
+  };
+  onMount(async () => {
+    burgers = await dataRequest();
+  });
+  // let promise = dataRequest();
+  $: remaining = burgers.filter(b => !b.devoured).length;
 </script>
 
-<div className="burger-new">
-  <ul>
-    {#each burgers as burger (burger.id)}
-      {#if !burger.done}
-        <li>{burger.name}</li>
-        <button on:click={devour} id={burger.id}>Devour it</button>
-      {/if}
-    {/each}
-  </ul>
+<div class=" container">
+  <div class="row">
+    <h1 class="center-align grey-text text-lighten-4">Veggie Burger Bash</h1>
+  </div>
+  <div class="burger-container row z-depth-3 fade-in">
+    <div class="burgers col s12 m6 center-align">
+      <h5>Ready to eat!</h5>
+      <ul class="collection">
+        {#each burgers as burger (burger.id)}
+          {#if !burger.devoured}
+            <div
+              class="burger-div"
+              data-id={burger.id}
+              data-devoured={burger.devoured}>
+              <li class="collection-item">
+                <h6>{burger.burger_name}</h6>
+              </li>
+              <button class=" btn-small devour-button" data-id={this.id}>
+                Devour it
+              </button>
+            </div>
+          {/if}
+        {:else}
+          <p>loading...</p>
+        {/each}
+      </ul>
+    </div>
+
+    <div class="burgers-devoured center-align col s12 m6">
+      <h5>You've already eaten:</h5>
+      <ul class="collection">
+        {#each burgers as burger (burger.id)}
+          {#if burger.devoured}
+            <div class="burger-div" data-devoured={burger.devoured}>
+              <li class="collection-item">{burger.burger_name}</li>
+            </div>
+          {/if}
+        {:else}
+          <p>loading...</p>
+        {/each}
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <p class="grey-text text-lighten-4">{remaining} remaining</p>
+
+    <input
+      class="grey-text text-lighten-4"
+      type="text"
+      id="burger-text"
+      bind:value={textValue} />
+    <button class="btn-large" id="add-burger">Add New</button>
+
+    <button class="btn-large" id="clear">Hide Completed</button>
+
+  </div>
 </div>
-<div className="burger-done">
-  <ul>
-    {#each burgers as burger}
-      {#if burger.done}
-        <li>{burger.name}</li>
-      {/if}
-    {/each}
-  </ul>
-</div>
-
-<p>{remaining} remaining</p>
-
-<input type="text" id="burger-text" bind:value={textValue} />
-<button on:click={addNew}>Add New</button>
-
-<button id="clear" on:click={clear}>Clear Completed</button>
