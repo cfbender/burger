@@ -3,7 +3,7 @@
   let id = 0;
   let burgers = [];
   let textValue = "";
-  let baseUrl = `http://${window.location.hostname}:${window.location.port}`;
+  let baseUrl = `https://${window.location.hostname}:${window.location.port}`;
 
   const clear = () => {
     burgers = burgers.filter(b => !b.devoured);
