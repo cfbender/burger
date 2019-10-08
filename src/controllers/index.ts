@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.get("/api/burgers", async (req, res) => {
   let data = await db.selectAll({ table: "burgers" });
-  console.log(data);
   res.json(data);
 });
 
