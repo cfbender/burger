@@ -1,12 +1,17 @@
 import mysql from "mysql";
+import dotenv from "dotenv";
 
-export const connection = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "password",
-  database: "burgers_db"
-});
+dotenv.config();
+
+export const connection = process.env.JAWSDB_URL
+  ? mysql.createConnection(process.env.JAWSDB_URL)
+  : mysql.createConnection({
+      host: "localhost",
+      port: 3306,
+      user: "root",
+      password: "password",
+      database: "burgers_db"
+    });
 
 connection.connect(err => {
   if (err) {
