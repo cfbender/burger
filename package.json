@@ -12,6 +12,7 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
+    "@types/dotenv": "^6.1.1",
     "@types/express": "^4.17.1",
     "@types/mysql": "^2.15.7",
     "dotenv": "^8.1.0",
@@ -21,7 +22,8 @@
     "typescript": "^3.6.3"
   },
   "scripts": {
-    "start": "rollup -c && tsc && node ./dist/server.js",
+    "start": "tsc && node ./dist/server.js",
+    "heroku-postbuild": "rollup -c",
     "autobuild": "rollup -c -w",
     "dev": "run-p start:dev autobuild",
     "start:dev": "sirv public --single --dev"
