@@ -17,6 +17,7 @@ router.post("/api/burgers/new", async (req, res) => {
   });
   res.sendStatus(200);
 });
+
 router.put("/api/burgers/", async (req, res) => {
   db.updateOne({
     table: "burgers",
@@ -29,4 +30,5 @@ router.put("/api/burgers/", async (req, res) => {
 router.get("*", async (req, res) => {
   res.sendFile(path.join(__dirname, "../../public/index.html"));
 });
+
 export default router;

@@ -2,45 +2,44 @@
   import { onMount } from "svelte";
   let id = 0;
   let burgers = [];
-  const clear = () => {
-    burgers = burgers.filter(b => !b.done);
-  };
-
   let textValue = "";
+  let baseUrl = `http://${window.location.hostname}:${window.location.port}`;
 
-  const addNew = e => {
-    if (textValue === "") {
-      return;
-    } else {
-      let newBurger = {
-        id: ++id,
-        name: textValue,
-        done: false
-      };
-      burgers = [...burgers, newBurger];
-      textValue = "";
-    }
+  const clear = () => {
+    burgers = burgers.filter(b => !b.devoured);
   };
 
-  const devour = e => {
-    let currentBurger = burgers.filter(b => b.id === Number(e.target.id))[0];
-    currentBurger.done = true;
-    let restofBurgers = burgers.filter(b => b.id !== Number(e.target.id));
-    burgers = [...restofBurgers, currentBurger];
+  const devour = async function(e) {
+    const url = `${baseUrl}/api/burgers/?id=${e.target.attributes["data-id"].value}`;
+    await fetch(url, {
+      method: "PUT"
+    });
+    burgers = await dataRequest();
+  };
+
+  const addNew = async function() {
+    const url = `${baseUrl}/api/burgers/new`;
+    await fetch(url, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify({ burger: textValue })
+    });
+    burgers = await dataRequest();
   };
 
   const dataRequest = async () => {
-    let data = await fetch(
-      `http://${window.location.hostname}:${window.location.port}/api/burgers`
-    );
+    let data = await fetch(`${baseUrl}/api/burgers`);
     let json = await data.json();
 
     return json;
   };
+
   onMount(async () => {
     burgers = await dataRequest();
   });
-  // let promise = dataRequest();
+
   $: remaining = burgers.filter(b => !b.devoured).length;
 </script>
 
@@ -61,19 +60,22 @@
               <li class="collection-item">
                 <h6>{burger.burger_name}</h6>
               </li>
-              <button class=" btn-small devour-button" data-id={this.id}>
+              <button
+                class=" btn-small devour-button"
+                data-id={burger.id}
+                on:click={devour}>
                 Devour it
               </button>
             </div>
           {/if}
         {:else}
-          <p>loading...</p>
+          <p>Enter a burger to get started!</p>
         {/each}
       </ul>
     </div>
 
     <div class="burgers-devoured center-align col s12 m6">
-      <h5>You've already eaten:</h5>
+      <h5>Already eaten:</h5>
       <ul class="collection">
         {#each burgers as burger (burger.id)}
           {#if burger.devoured}
@@ -82,7 +84,7 @@
             </div>
           {/if}
         {:else}
-          <p>loading...</p>
+          <p>Waiting..</p>
         {/each}
       </ul>
     </div>
@@ -95,9 +97,7 @@
       type="text"
       id="burger-text"
       bind:value={textValue} />
-    <button class="btn-large" id="add-burger">Add New</button>
-
-    <button class="btn-large" id="clear">Hide Completed</button>
+    <button class="btn-large" id="add-burger" on:click={addNew}>Add New</button>
 
   </div>
 </div>
