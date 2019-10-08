@@ -2,17 +2,18 @@ function isInputElement(x: any): x is HTMLInputElement {
   return "value" in x;
 }
 
+const baseUrl = `http://${window.location.hostname}:${window.location.port}`;
 const devourButtons = document.querySelectorAll(".devour-button");
 
 const devour = async function(this: HTMLElement) {
   const id = this.getAttribute("data-id");
-  const url = `/api/burgers/?id=${id}`;
-
-  const response = await fetch(url, {
+  const url = `${baseUrl}/api/burgers/?id=${id}`;
+  await fetch(url, {
     method: "PUT"
   });
-
-  this.setAttribute("data-devoured", "true");
+  if (this.parentElement !== null) {
+    this.parentElement.setAttribute("data-devoured", "1");
+  }
   location.reload(true);
 };
 
@@ -20,7 +21,7 @@ const addNew = async function() {
   let inputBox = document.getElementById("burger-text");
   if (isInputElement(inputBox)) {
     const text = inputBox.value;
-    const url = `/api/burgers/`;
+    const url = `${baseUrl}/api/burgers/new`;
     await fetch(url, {
       headers: {
         "Content-Type": "application/json"
@@ -28,17 +29,15 @@ const addNew = async function() {
       method: "POST",
       body: JSON.stringify({ burger: text })
     });
+    location.reload(true);
   } else {
     return;
   }
 };
 
 const clear = async function() {
-  const allWithDevoured = document.querySelectorAll("data-devoured");
-  const allDevoured = Array.from(allWithDevoured).filter(
-    el => el.getAttribute("data-devoured") === "true"
-  );
-  console.log(allDevoured);
+  const allDevoured = document.querySelectorAll("div[data-devoured='1']");
+  Array.from(allDevoured).forEach(el => el.classList.add("hide"));
 };
 
 Array.from(devourButtons).forEach(element => {

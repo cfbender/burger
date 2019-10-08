@@ -66,7 +66,8 @@ var insertOne = function (_a) {
     return __awaiter(void 0, void 0, void 0, function () {
         var query;
         return __generator(this, function (_b) {
-            query = ["INSERT INTO ?? SET ?", __spreadArrays([table], values)];
+            query = ["INSERT INTO ?? SET ?", [table, values]];
+            console.log(query);
             return [2 /*return*/, new Promise(function (resolve, reject) {
                     // @ts-ignore
                     connection_1.connection.query.apply(connection_1.connection, __spreadArrays(query, [function (err, res) {
@@ -83,7 +84,8 @@ var updateOne = function (_a) {
     return __awaiter(void 0, void 0, void 0, function () {
         var query;
         return __generator(this, function (_b) {
-            query = ["UPDATE ?? SET ? WHERE id = ?", __spreadArrays([table], values, [id])];
+            query = ["UPDATE ?? SET ? WHERE id = ?", [table, values, id]];
+            console.log(query);
             return [2 /*return*/, new Promise(function (resolve, reject) {
                     // @ts-ignore
                     connection_1.connection.query.apply(connection_1.connection, __spreadArrays(query, [function (err, res) {

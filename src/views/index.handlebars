@@ -1,35 +1,44 @@
-<h1>Veggie Burger Bash</h1>
-<div class="burger-container">
-    <div class="burgers">
-        <ul>
-            {{#each burgers}}
-            {{#unless this.devoured}}
-            <div class="burger-div" data-id={{this.id}} data-devoured={{this.devoured}}>
-                <li>{{this.burger_name}}</li>
-                <button class="devour-button" data-id={{this.id}}>Devour it</button>
-            </div>
-            {{/unless}}
-            {{/each}}
-        </ul>
+<div class=" container">
+    <div class="row">
+        <h1 class="center-align grey-text text-lighten-4">Veggie Burger Bash</h1>
     </div>
+    <div class="burger-container row z-depth-3 fade-in">
+        <div class="burgers col s12 m6  center-align">
+            <h5>Ready to eat!</h5>
+            <ul class="collection">
+                {{#each burgers}}
+                {{#unless this.devoured}}
+                <div class="burger-div" data-id={{this.id}} data-devoured={{this.devoured}}>
+                    <li class="collection-item">
+                        <h6>{{this.burger_name}}</h6>
+                    </li>
+                    <button class=" btn-small devour-button" data-id={{this.id}}>Devour it</button>
+                </div>
+                {{/unless}}
+                {{/each}}
+            </ul>
+        </div>
 
-    <div className="burgers-devoured">
-        You've already eaten:
-        <ul>
-            {{#each burgers}}
-            {{#if this.devoured}}
-            <div class="burger-div">
-                <li data-devoured={{this.devoured}}>{{this.burger_name}}</li>
-            </div>
-            {{/if}}
-            {{/each}}
-        </ul>
+        <div class="burgers-devoured center-align col s12 m6">
+            <h5>You've already eaten:</h5>
+            <ul class="collection">
+                {{#each burgers}}
+                {{#if this.devoured}}
+                <div class="burger-div" data-devoured={{this.devoured}}>
+                    <li class="collection-item">{{this.burger_name}}</li>
+                </div>
+                {{/if}}
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <p class="grey-text text-lighten-4">{{remaining}} remaining</p>
+
+        <input class="grey-text text-lighten-4" type="text" id="burger-text" bind:value={textValue} />
+        <button class="btn-large" id="add-burger">Add New</button>
+
+        <button class="btn-large" id="clear">Hide Completed</button>
+
     </div>
 </div>
-
-<p>{{burgers.length}} remaining</p>
-
-<input type="text" id="burger-text" bind:value={textValue} />
-<button id="add-burger">Add New</button>
-
-<button id="clear">Clear Completed</button>

@@ -42,6 +42,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var orm_1 = require("../config/orm");
 var router = express_1.default.Router();
+router.post("/api/burgers/new", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        orm_1.orm.insertOne({
+            table: "burgers",
+            values: { burger_name: req.body.burger, devoured: false }
+        });
+        res.sendStatus(200);
+        return [2 /*return*/];
+    });
+}); });
+router.put("/api/burgers/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        orm_1.orm.updateOne({
+            table: "burgers",
+            values: { devoured: true },
+            id: parseInt(req.query.id)
+        });
+        res.sendStatus(200);
+        return [2 /*return*/];
+    });
+}); });
 router.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var data;
     return __generator(this, function (_a) {
@@ -50,25 +71,12 @@ router.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, f
             case 1:
                 data = _a.sent();
                 console.log(data);
-                res.render("index", { burgers: data });
+                res.render("index", {
+                    burgers: data,
+                    remaining: data.filter(function (burger) { return !burger.devoured; }).length
+                });
                 return [2 /*return*/];
         }
-    });
-}); });
-router.post("/api/burgers", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        console.log("POST with " + JSON.stringify(req.body));
-        return [2 /*return*/];
-    });
-}); });
-router.put("/api/burgers/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        orm_1.orm.updateOne({
-            table: "burgers",
-            values: [{ devoured: true }],
-            id: parseInt(req.query.id)
-        });
-        return [2 /*return*/];
     });
 }); });
 exports.default = router;

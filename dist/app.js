@@ -38,21 +38,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 function isInputElement(x) {
     return "value" in x;
 }
+var baseUrl = "http://" + window.location.hostname + ":" + window.location.port;
 var devourButtons = document.querySelectorAll(".devour-button");
 var devour = function () {
     return __awaiter(this, void 0, void 0, function () {
-        var id, url, response;
+        var id, url;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     id = this.getAttribute("data-id");
-                    url = "/api/burgers/?id=" + id;
+                    url = baseUrl + "/api/burgers/?id=" + id;
                     return [4 /*yield*/, fetch(url, {
                             method: "PUT"
                         })];
                 case 1:
-                    response = _a.sent();
-                    this.setAttribute("data-devoured", "true");
+                    _a.sent();
+                    if (this.parentElement !== null) {
+                        this.parentElement.setAttribute("data-devoured", "1");
+                    }
                     location.reload(true);
                     return [2 /*return*/];
             }
@@ -68,7 +71,7 @@ var addNew = function () {
                     inputBox = document.getElementById("burger-text");
                     if (!isInputElement(inputBox)) return [3 /*break*/, 2];
                     text = inputBox.value;
-                    url = "/api/burgers/";
+                    url = baseUrl + "/api/burgers/new";
                     return [4 /*yield*/, fetch(url, {
                             headers: {
                                 "Content-Type": "application/json"
@@ -78,6 +81,7 @@ var addNew = function () {
                         })];
                 case 1:
                     _a.sent();
+                    location.reload(true);
                     return [3 /*break*/, 3];
                 case 2: return [2 /*return*/];
                 case 3: return [2 /*return*/];
@@ -87,11 +91,10 @@ var addNew = function () {
 };
 var clear = function () {
     return __awaiter(this, void 0, void 0, function () {
-        var allWithDevoured, allDevoured;
+        var allDevoured;
         return __generator(this, function (_a) {
-            allWithDevoured = document.querySelectorAll("data-devoured");
-            allDevoured = Array.from(allWithDevoured).filter(function (el) { return el.getAttribute("data-devoured") === "true"; });
-            console.log(allDevoured);
+            allDevoured = document.querySelectorAll("div[data-devoured='1']");
+            Array.from(allDevoured).forEach(function (el) { return el.classList.add("hide"); });
             return [2 /*return*/];
         });
     });
